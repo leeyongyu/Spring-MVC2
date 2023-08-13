@@ -1,6 +1,8 @@
 package springmvc2.thymeleafbasic.basic;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,9 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping("/basic")
 public class BasicController {
+
+    @Autowired
+    MessageSource messageSource;
 
     @GetMapping("text-basic")
     public String textBasic(Model model){
@@ -77,14 +82,16 @@ public class BasicController {
 
     @GetMapping("/literal")
     public String literal(Model model){
-        model.addAttribute("data","Spring!");
+        String result = messageSource.getMessage("spring-default",null,null);
+        model.addAttribute("data",result);
         return "basic/literal";
     }
 
     @GetMapping("/operation")
     public String operation(Model model){
         model.addAttribute("nullData",null);
-        model.addAttribute("data","Spring!");
+        String result = messageSource.getMessage("spring-default",null,null);
+        model.addAttribute("data",result);
         return "basic/operation";
     }
 
@@ -97,6 +104,12 @@ public class BasicController {
     public String each(Model model){
         addUsers(model);
         return "basic/each";
+    }
+
+    @GetMapping("/condition")
+    public String condition(Model model){
+        addUsers(model);
+        return "basic/condition";
     }
 
     private void addUsers(Model model){
